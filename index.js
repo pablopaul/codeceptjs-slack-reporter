@@ -41,61 +41,10 @@ module.exports = (config) => {
     if (!config[field]) throw new Error(`Slack reporter config is invalid. Key ${field} is missing in config.\nRequired fields: ${requiredFields} `)
   }
 
-  event.dispatcher.on(event.suite.before, (suite) => {
-    recorder.add(async () => {
-
-    });
-  });
-
-  event.dispatcher.on(event.test.before, (test) => {
-    recorder.add(async () => {
-      totalScenarioCount++;
-    });
-  });
-
-  event.dispatcher.on(event.step.before, (step) => {
-    recorder.add(async () => {
-
-    });
-  });
-
-  event.dispatcher.on(event.step.after, (step) => {
-  });
-
-  event.dispatcher.on(event.step.failed, (step, err) => {
-    recorder.add(async () => {
-
-    });
-  });
-
-  event.dispatcher.on(event.step.passed, (step) => {
-    recorder.add(async () => {
-
-    });
-  });
-
-  event.dispatcher.on(event.test.passed, (test) => {
-    recorder.add(async () => {
-      passedScenarioCount++;
-    });
-  });
-
   event.dispatcher.on(event.test.failed, async (test, err) => {
     recorder.add(async () => {
       failedScenarioCount++;
       failedScenarios.push({test, err});
-    });
-  });
-
-  event.dispatcher.on(event.test.after, (test) => {
-    recorder.add(async () => {
-
-    });
-  });
-
-  event.dispatcher.on(event.suite.after, (suite) => {
-    recorder.add(async () => {
-
     });
   });
 
@@ -111,4 +60,5 @@ module.exports = (config) => {
       output.print("\n---\n");
     }
   });
+
 };
