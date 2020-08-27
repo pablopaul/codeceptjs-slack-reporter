@@ -1,0 +1,24 @@
+{
+  "name": "codeceptjs-slack-reporter",
+  "version": "0.0.1",
+  "description": "CodeceptJS Slack Reporter",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pablopaul/codeceptjs-slack-reporter.git"
+  },
+  "keywords": [
+    "codeceptjs",
+    "slack",
+    "reporter"
+  ],
+  "author": "Paul Vincent Beigang",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pablopaul/codeceptjs-slack-reporter/issues"
+  },
+  "homepage": "https://github.com/pablopaul/codeceptjs-slack-reporter#readme"
+}

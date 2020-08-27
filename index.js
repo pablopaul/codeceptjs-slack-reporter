@@ -1,3 +1,4 @@
+const { getPercentage } = require("./utilities.js");
 const { event, recorder, output, container } = codeceptjs;
 
 const helpers = container.helpers();
@@ -25,8 +26,13 @@ const defaultConfig = {
   enabled: false
 };
 
-const requiredFields = ['projectName'];
+const requiredFields = [];
 
+let totalScenarioCount = 0;
+let passedScenarioCount = 0;
+let failedScenarioCount = 0;
+
+let failedScenarios = [];
 
 module.exports = (config) => {
   config = Object.assign(defaultConfig, config);
@@ -43,7 +49,7 @@ module.exports = (config) => {
 
   event.dispatcher.on(event.test.before, (test) => {
     recorder.add(async () => {
-
+      totalScenarioCount++;
     });
   });
 
@@ -68,15 +74,16 @@ module.exports = (config) => {
     });
   });
 
-  event.dispatcher.on(event.test.failed, async (test, err) => {
+  event.dispatcher.on(event.test.passed, (test) => {
     recorder.add(async () => {
-
+      passedScenarioCount++;
     });
   });
 
-  event.dispatcher.on(event.test.passed, (test) => {
+  event.dispatcher.on(event.test.failed, async (test, err) => {
     recorder.add(async () => {
-
+      failedScenarioCount++;
+      failedScenarios.push({test, err});
     });
   });
 
@@ -93,7 +100,15 @@ module.exports = (config) => {
   });
 
   event.dispatcher.on(event.all.result, () => {
-
+    output.print(`Total scenarios executed: ${totalScenarioCount}`);
+    output.print(`${passedScenarioCount} scenario/s passed (${getPercentage(passedScenarioCount, totalScenarioCount)})`);
+    output.print(`${failedScenarioCount} scenario/s failed (${getPercentage(failedScenarioCount, totalScenarioCount)})`);
+    output.print("\n");
+    for (let i = 0; i < failedScenarios.length; i++) {
+      const shortenedErrorStack = failedScenarios[i].err.stack.replace(/\n\n\n\nRun with --verbose flag to see NodeJS stacktrace/, "");
+      output.print(`"${failedScenarios[i].test.title}" failed because`);
+      output.print(shortenedErrorStack);
+      output.print("\n---\n");
+    }
   });
-
 };
