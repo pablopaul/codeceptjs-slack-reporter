@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/pablopaul/codeceptjs-slack-reporter/issues"
   },
-  "homepage": "https://github.com/pablopaul/codeceptjs-slack-reporter#readme"
+  "homepage": "https://github.com/pablopaul/codeceptjs-slack-reporter#readme",
+  "dependencies": {
+    "@slack/webhook": "^5.0.3"
+  }
 }
