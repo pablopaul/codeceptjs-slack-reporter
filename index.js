@@ -24,6 +24,7 @@ for (const helperName of screenshotHelpers) {
 const defaultConfig = {
   enabled: false,
   webhookUrl: process.env.SLACK_WEBHOOK_URL,
+  messageIntro: "Acceptance Tests failed.",
   devMode: false
 };
 
@@ -63,7 +64,7 @@ module.exports = (config) => {
 
   event.dispatcher.on(event.all.result, () => {
 
-    let message = "";
+    let message = `${config.messageIntro}\n\n`;
 
     message += `Total scenarios executed: ${totalScenarioCount}\n`;
     message += `${passedScenarioCount} scenario/s passed (${getPercentage(passedScenarioCount, totalScenarioCount)})\n`;

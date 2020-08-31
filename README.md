@@ -15,13 +15,17 @@ Enable this plugin should added in `codecept.conf.js`:
    plugins: {
     "slack-reporter": {
       require: 'codeceptjs-slack-reporter',
-      enabled: true,
+      enabled: true
     }
   //...
 }
 ```
 
 Export the environment variable `SLACK_WEBHOOK_URL`, i.e. ` SLACK_WEBHOOK_URL=https://hooks.slack.com/... npx codeceptjs run`.
+
+### messageIntro
+
+With `messageIntro` you can customize the message, i.e. use custom CI env information like `messageIntro: `Acceptance tests failed for branch "${process.env.CF_BRANCH}" within <${process.env.CF_BUILD_URL}|this pipeline>.`. 
 
 ### Dev Mode
 
