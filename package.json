@@ -1,6 +1,6 @@
 {
   "name": "codeceptjs-slack-reporter",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "CodeceptJS Slack Reporter",
   "main": "index.js",
   "scripts": {
