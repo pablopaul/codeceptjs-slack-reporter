@@ -40,3 +40,7 @@ messageIntro: `Acceptance tests failed for branch "${process.env.CF_BRANCH}" wit
 
 Set `devMode: true` to print the message to the console instead reporting it to Slack.
 Only when at least one scenario is failing there will be output.
+
+## Example Notification
+
+![image](https://user-images.githubusercontent.com/635526/91888174-22b3b280-ec8c-11ea-9916-e5ec209c56f8.png)
