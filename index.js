@@ -39,6 +39,11 @@ let failedScenarios = [];
 module.exports = (config) => {
   config = Object.assign(defaultConfig, config);
 
+  const customWebhookUrlEnvVar = config.webhookUrlEnvVar;
+  if(customWebhookUrlEnvVar) {
+    config.webhookUrl = customWebhookUrlEnvVar;
+  }
+
   for (let field of requiredFields) {
     if (!config[field]) throw new Error(`Slack reporter config is invalid: "${field}" is missing in config.`)
   }
@@ -66,22 +71,19 @@ module.exports = (config) => {
 
     let message = `${config.messageIntro}\n\n`;
 
-    message += `Total scenarios executed: ${totalScenarioCount}\n`;
-    message += `${passedScenarioCount} scenario/s passed (${getPercentage(passedScenarioCount, totalScenarioCount)})\n`;
-    message += `${failedScenarioCount} scenario/s failed (${getPercentage(failedScenarioCount, totalScenarioCount)})\n\n`;
+    message += `${totalScenarioCount} scenarios executed:\n`;
+    message += `${getPercentage(passedScenarioCount, totalScenarioCount)} (${passedScenarioCount}) scenarios passed\n`;
+    message += `${getPercentage(failedScenarioCount, totalScenarioCount)} (${failedScenarioCount}) scenarios failed\n\n`;
     for (let i = 0; i < failedScenarios.length; i++) {
-      message += `*${failedScenarios[i].test.title}* failed because\n`;
-
-      const shortenedErrorStack = failedScenarios[i].err.stack.replace(/\n\n\n\nRun with --verbose flag to see NodeJS stacktrace/, "");
-      message += `\`\`\`${shortenedErrorStack}\`\`\`\n\n`;
+      const oneLineTitle = failedScenarios[i].test.title.replace(/\s\s\s\s\s\s/, "").replace(/\n\s\s\s\s\s\s\s\s\s/, "");
+      message += `*${oneLineTitle}* failed because\n`;
+      message += `\`${failedScenarios[i].err.message}\`\n\n`;
     }
 
     // Only report in Slack if at least one scenario failed
     if ( !config.devMode && failedScenarioCount > 0 ) {
 
-      const webhook = new IncomingWebhook(config.webhookUrl, {
-        icon_emoji: ':bowtie:',
-      });
+      const webhook = new IncomingWebhook(config.webhookUrl);
 
       (async () => {
         await webhook.send({
