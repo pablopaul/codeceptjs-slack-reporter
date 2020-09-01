@@ -2,25 +2,6 @@ const { getPercentage } = require("./utilities.js");
 const { event, recorder, output, container } = codeceptjs;
 const { IncomingWebhook } = require('@slack/webhook');
 
-const helpers = container.helpers();
-let helper;
-
-const screenshotHelpers = [
-  'WebDriver',
-  'Protractor',
-  'Appium',
-  'Nightmare',
-  'Puppeteer',
-  'TestCafe',
-  'Playwright',
-];
-
-for (const helperName of screenshotHelpers) {
-  if (Object.keys(helpers).indexOf(helperName) > -1) {
-    helper = helpers[helperName];
-  }
-}
-
 const defaultConfig = {
   enabled: false,
   webhookUrl: process.env.SLACK_WEBHOOK_URL,
