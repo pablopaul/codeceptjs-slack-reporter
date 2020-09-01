@@ -5,7 +5,7 @@ Get a Slack notification when one or more scenarios fail.
 ## Installation
 
 * `npm install codeceptjs-slack-reporter --save-dev`
-* Enable this plugin should added in `codecept.conf.js`:
+* Enable this plugin in `codecept.conf.js`:
 
 ```js
 {
@@ -21,6 +21,8 @@ Get a Slack notification when one or more scenarios fail.
 
 * Create an incoming webhook, see https://api.slack.com/messaging/webhooks
 * Export an environment variable called `SLACK_WEBHOOK_URL==https://hooks.slack.com/services/…` with your webhook url
+
+## Configuration
 
 ### webhookUrlEnvVar
 
