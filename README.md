@@ -30,7 +30,10 @@ This usage can be overriden by using the `webhookUrlEnvVar: process.env.MY_ENV_V
 
 ### messageIntro
 
-With `messageIntro` you can customize the message, i.e. use custom CI env information like `messageIntro: \`Acceptance tests failed for branch "${process.env.CF_BRANCH}" within <${process.env.CF_BUILD_URL}|this pipeline>.\``. 
+With `messageIntro` you can customize the message, i.e. use custom CI env information like 
+```js
+messageIntro: `Acceptance tests failed for branch "${process.env.CF_BRANCH}" within <${process.env.CF_BUILD_URL}|this pipeline>.`
+```
 
 ### devMode
 
