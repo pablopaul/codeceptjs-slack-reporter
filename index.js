@@ -29,32 +29,17 @@ module.exports = (config) => {
     if (!config[field]) throw new Error(`Slack reporter config is invalid: "${field}" is missing in config.`)
   }
 
-  event.dispatcher.on(event.test.before, (test) => {
-    recorder.add(async () => {
-      totalScenarioCount++;
-    });
-  });
-
-  event.dispatcher.on(event.test.passed, (test) => {
-    recorder.add(async () => {
-      passedScenarioCount++;
-    });
-  });
-
   event.dispatcher.on(event.test.failed, async (test, err) => {
     recorder.add(async () => {
-      failedScenarioCount++;
       failedScenarios.push({test, err});
     });
   });
 
   event.dispatcher.on(event.all.result, () => {
 
+    const shouldMessage = failedScenarios.length;
     let message = `${config.messageIntro}\n\n`;
 
-    message += `${totalScenarioCount} scenarios executed:\n`;
-    message += `${getPercentage(passedScenarioCount, totalScenarioCount)} (${passedScenarioCount}) scenarios passed\n`;
-    message += `${getPercentage(failedScenarioCount, totalScenarioCount)} (${failedScenarioCount}) scenarios failed\n\n`;
     for (let i = 0; i < failedScenarios.length; i++) {
       const oneLineTitle = failedScenarios[i].test.title.replace(/\s\s\s\s\s\s/, "").replace(/\n\s\s\s\s\s\s\s\s\s/, "");
       message += `*${oneLineTitle}* failed because\n`;
@@ -62,21 +47,26 @@ module.exports = (config) => {
     }
 
     // Only report in Slack if at least one scenario failed
-    if ( !config.devMode && failedScenarioCount > 0 ) {
+    if ( !config.devMode && shouldMessage ) {
 
       const webhook = new IncomingWebhook(config.webhookUrl);
 
       (async () => {
-        await webhook.send({
-          text: message,
-        });
+        try {
+          await webhook.send({
+            text: message,
+          });
+        } catch (error) {
+          output.print("Communication with Slack webhook failed");
+          output.print(error);
+        }
+
       })();
     }
 
-    if ( config.devMode ) {
+    if (config.devMode && shouldMessage) {
       output.print(message);
     }
-
   });
 
 };

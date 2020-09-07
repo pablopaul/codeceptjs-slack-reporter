@@ -39,8 +39,10 @@ messageIntro: `Acceptance tests failed for branch "${process.env.CF_BRANCH}" wit
 ### devMode
 
 Set `devMode: true` to print the message to the console instead reporting it to Slack.
-Only when at least one scenario is failing there will be output.
+Needs to be run with `--debug`, only when at least one scenario is failing there will be output.
 
-## Example Notification
+## Remarks
 
-![image](https://user-images.githubusercontent.com/635526/91888174-22b3b280-ec8c-11ea-9916-e5ec209c56f8.png)
+To have basic compatiblity with `run-workers` there can be multiple notifications for one test run depending on how
+much threads have at least on failure. I did not find a way to merge all failures after all workers are finished and
+then only send one notification.
