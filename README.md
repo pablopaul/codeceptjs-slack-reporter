@@ -5,7 +5,7 @@ Get a Slack notification when one or more scenarios fail.
 ## Installation
 
 * `npm install codeceptjs-slack-reporter --save-dev`
-* Enable this plugin in `codecept.conf.js`:
+* Enable this plugin in `codecept.conf.js` with the minimal config:
 
 ```js
 {
@@ -18,16 +18,14 @@ Get a Slack notification when one or more scenarios fail.
   //...
 }
 ```
-
-* Create an incoming webhook, see https://api.slack.com/messaging/webhooks
-* Export an environment variable called `SLACK_WEBHOOK_URL==https://hooks.slack.com/services/…` with your webhook url
+* Create a new Slack app https://api.slack.com/start/overview#creating
+* Add `chat:write` permission to this Slack app, see https://api.slack.com/messaging/sending#publishing
+* Get Slack oauth access token and export as `SLACK_BOT_TOKEN` env var
+* Get Slack signing secret and export as `SLACK_SIGNING_SECRET` env var, see https://api.slack.com/start/building/bolt-js#credentials
+* Get the id of the channel which should receive the notifications and export as `SLACK_E2E_CHANNEL_ID` env var, see https://stackoverflow.com/a/57246565/1744768
+* Invite the bot (which is the freshly created "app") to the channel in slack with the command `/invite @botname`
 
 ## Configuration
-
-### webhookUrlEnvVar
-
-The plugin uses the environment variable `SLACK_WEBHOOK_URL` by default. 
-This usage can be overriden by using the `webhookUrlEnvVar: process.env.MY_ENV_VAR_NAME` property. 
 
 ### messageIntro
 
@@ -36,13 +34,11 @@ With `messageIntro` you can customize the message, i.e. use custom CI env inform
 messageIntro: `Acceptance tests failed for branch "${process.env.CF_BRANCH}" within <${process.env.CF_BUILD_URL}|this pipeline>.`
 ```
 
-### devMode
+### threadIdentifier
 
-Set `devMode: true` to print the message to the console instead reporting it to Slack.
-Needs to be run with `--debug`, only when at least one scenario is failing there will be output.
+For my use case I use one Slack thread of messages per branch, the branch name is available as env var like `MY_BRANCH` so I configure this:
+```js
+threadFilename: process.env.MY_BRANCH
+```
 
-## Remarks
-
-To have basic compatiblity with `run-workers` there can be multiple notifications for one test run depending on how
-much threads have at least on failure. I did not find a way to merge all failures after all workers are finished and
-then only send one notification.
+The filetype ending `.txt` is added automatically.
