@@ -1,4 +1,4 @@
-const { event, recorder, output, container } = codeceptjs;
+const { event, recorder } = codeceptjs;
 const { App } = require("@slack/bolt");
 
 const { notifySlackChannel } = require("./utilities.js");
@@ -8,7 +8,7 @@ const defaultConfig = {
   token: process.env.SLACK_BOT_TOKEN,
   secret: process.env.SLACK_SIGNING_SECRET,
   channelId: process.env.SLACK_E2E_CHANNEL_ID,
-  threadFilename: "filename.txt",
+  threadFilename: "filename",
   messageIntro: "Acceptance Tests failed.",
 };
 

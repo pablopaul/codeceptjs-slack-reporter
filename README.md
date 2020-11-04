@@ -25,6 +25,21 @@ Get a Slack notification when one or more scenarios fail.
 * Get the id of the channel which should receive the notifications and export as `SLACK_E2E_CHANNEL_ID` env var, see https://stackoverflow.com/a/57246565/1744768
 * Invite the bot (which is the freshly created "app") to the channel in slack with the command `/invite @botname`
 
+### Usage with CodeceptJS REST helper
+
+If you use the CodeceptJS REST / ApiDataFactory helper there is a current bug with this plugin, see https://github.com/codeceptjs/CodeceptJS/issues/2652
+A workaround is to set the from the slack web-api code expected header in the REST helper configuration like this
+
+```js
+REST: {
+  defaultHeaders: {
+    post: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  }
+}
+```
+
 ## Configuration
 
 ### messageIntro
