@@ -51,7 +51,7 @@ async function notifySlackChannel(app, pluginConfig, test, err) {
 
     /*
      The first failed scenario for the current branch creates a message thread and
-     saves it to a file, following failures will be posted into this file
+     saves it to a file, following failures will be posted into this thread
 
      Basically this is a workaround to enable the workers to communicate with each other
      */
