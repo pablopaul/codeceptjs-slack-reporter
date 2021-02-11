@@ -1,6 +1,6 @@
 # CodeceptJS Slack Reporter
 
-Get a Slack notification when one or more scenarios fail.
+Get an instant Slack notification when one or more scenarios fail.
 
 ## Installation
 
@@ -57,3 +57,25 @@ threadFilename: process.env.MY_BRANCH
 ```
 
 The filetype ending `.txt` is added automatically.
+
+### GitLab Specifics
+
+This plugin allows to indicate if a GitLab merge request has "draft" status. If you enable and configure this feature, 
+the plugin will automatically add a "construction" emoji to failure threads, which are for a merge request with "draft" status.
+This can help with prioritizing analyzing the failures.
+
+#### Setup & Configuration
+
+* Add the `reactions:write` permission to your Slack bot
+* Export env var "GL_TOKEN", which needs to have the right "read_api" for the desired GitLab project
+* Add the following properties to the plugin config: 
+```js
+gitlabIndicateDraftStatus: true, 
+gitlabProjectId: 123, // find the project id value from the GitLab project settings main screen
+gitlabMrIdEnvVarName: process.env.CF_PULL_REQUEST_ID
+```
+
+## Known Limitations
+
+I you use retry on scenario level, you will receive a failure for the first run, even if the second run succeeds. 
+This limitation is coming from CodeceptJS v2 "sharing data between worker" limitations (can be improved with v3). And it could be useful for analyzing flaky tests. 

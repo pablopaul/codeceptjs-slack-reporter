@@ -10,6 +10,9 @@ const defaultConfig = {
   channelId: process.env.SLACK_E2E_CHANNEL_ID,
   threadFilename: "filename",
   messageIntro: "Acceptance Tests failed.",
+  gitlabIndicateDraftStatus: false,
+  gitlabProjectId: undefined,
+  gitlabMrIdEnvVarName: process.env.CF_PULL_REQUEST_ID
 };
 
 const requiredFields = ["token", "secret", "channelId"];

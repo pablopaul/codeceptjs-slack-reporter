@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/pablopaul/codeceptjs-slack-reporter#readme",
   "dependencies": {
-    "@slack/bolt": "^2.4.1"
+    "@slack/bolt": "^2.4.1",
+    "axios": "^0.21.1"
   }
 }

@@ -1,5 +1,20 @@
+const { output } = require('codeceptjs');
 const fs = require('fs').promises;
 const path = require("path");
+const axios = require('axios');
+
+async function isGitlabMrWorkInProgress(gitlabProjectId, mrIdEnvVarName) {
+    const gitlabApiPath = 'https://gitlab.com/api/v4';
+    try {
+        const response = await axios.get(`${gitlabApiPath}/projects/${gitlabProjectId}/merge_requests/${mrIdEnvVarName}?private_token=${process.env.GL_TOKEN}`);
+        return response.data.work_in_progress;
+    }
+    catch (err) {
+        output.print(`Error while calling the GitLab MR API: ${JSON.stringify(err)}`);
+
+        return true;
+    }
+}
 
 async function notifySlackChannel(app, pluginConfig, test, err) {
 
@@ -13,6 +28,24 @@ async function notifySlackChannel(app, pluginConfig, test, err) {
                 channel: pluginConfig.channelId,
                 thread_ts: threadId,
                 text
+            });
+
+            return result;
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+
+    async function indicateWorkInProgressStatus(threadId) {
+        try {
+            // Call the chat.postMessage method using the built-in WebClient
+            const result = await app.client.reactions.add({
+                // The token you used to initialize your app
+                token: pluginConfig.token,
+                channel: pluginConfig.channelId,
+                timestamp: threadId,
+                name: "construction"
             });
 
             return result;
@@ -77,6 +110,10 @@ async function notifySlackChannel(app, pluginConfig, test, err) {
                 if (err) throw err;
             }
         );
+
+        if (pluginConfig.gitlabIndicateDraftStatus && await isGitlabMrWorkInProgress(pluginConfig.gitlabProjectId, pluginConfig.gitlabMrIdEnvVarName)) {
+            await indicateWorkInProgressStatus(threadId);
+        }
     }
 }
 
