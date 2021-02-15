@@ -12,7 +12,7 @@ async function isGitlabMrWorkInProgress(gitlabProjectId, mrIdEnvVarName) {
     catch (err) {
         output.print(`Error while calling the GitLab MR API: ${JSON.stringify(err)}`);
 
-        return true;
+        return false;
     }
 }
 
