@@ -74,8 +74,3 @@ gitlabIndicateDraftStatus: true,
 gitlabProjectId: 123, // find the project id value from the GitLab project settings main screen
 gitlabMrIdEnvVarName: process.env.CF_PULL_REQUEST_ID
 ```
-
-## Known Limitations
-
-I you use retry on scenario level, you will receive a failure for the first run, even if the second run succeeds. 
-This limitation is coming from CodeceptJS v2 "sharing data between worker" limitations (can be improved with v3). And it could be useful for analyzing flaky tests. 
