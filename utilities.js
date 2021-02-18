@@ -4,6 +4,11 @@ const path = require("path");
 const axios = require('axios');
 
 async function isGitlabMrWorkInProgress(gitlabProjectId, mrIdEnvVarName) {
+
+    if(!mrIdEnvVarName) {
+        return false;
+    }
+
     const gitlabApiPath = 'https://gitlab.com/api/v4';
     try {
         const response = await axios.get(`${gitlabApiPath}/projects/${gitlabProjectId}/merge_requests/${mrIdEnvVarName}?private_token=${process.env.GL_TOKEN}`);
