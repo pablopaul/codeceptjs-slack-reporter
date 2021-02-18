@@ -33,8 +33,8 @@ module.exports = (config) => {
 
     recorder.add(async () => {
 
-      // Only notify when retries are not used (_retries=0) or it is the last try
-      if(test.retryNum == test._retries) {
+      // Only notify when retries are not used or it is the last try
+      if(test._retries === -1|| test.retryNum == test._retries) {
         await notifySlackChannel(app, config, test, err);
       }
 
