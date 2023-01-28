@@ -102,7 +102,7 @@ async function notifySlackChannel(app, pluginConfig, test, err) {
         await publishMessage(followUpMessage, threadId);
 
     } catch (err) {
-        // Branch specific thread file does not exists, first failure
+        // Branch specific thread file does not exist, first failure
 
         const response = await publishMessage(firstMessage);
         const threadId = response.ts;
