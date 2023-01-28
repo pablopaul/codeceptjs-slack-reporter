@@ -22,7 +22,6 @@ async function isGitlabMrWorkInProgress(gitlabProjectId, mrIdEnvVarName) {
 }
 
 async function notifySlackChannel(app, pluginConfig, test, err) {
-
     // Post a message to a channel your app is in using ID and message text
     async function publishMessage(text, threadId) {
         try {
@@ -82,10 +81,10 @@ async function notifySlackChannel(app, pluginConfig, test, err) {
 
     const oneLineTitle = test.title.replace(/\s\s\s\s\s\s/, "").replace(/\n\s\s\s\s\s\s\s\s\s/, "");
     firstMessage += `*${oneLineTitle}* failed because\n`;
-    firstMessage += `\`\`\`\n${err.message}\n\`\`\`\n\n`;
+    firstMessage += `\`\`\`\n${JSON.stringify(err)}\n\`\`\`\n\n`;
 
     let followUpMessage = `*${oneLineTitle}* failed because\n`;
-    followUpMessage += `\`\`\`\n${err.message}\n\`\`\`\n\n`;
+    followUpMessage += `\`\`\`\n${JSON.stringify(err)}\n\`\`\`\n\n`;
 
     /*
      The first failed scenario for the current branch creates a message thread and
@@ -103,7 +102,7 @@ async function notifySlackChannel(app, pluginConfig, test, err) {
         await publishMessage(followUpMessage, threadId);
 
     } catch (err) {
-        // Branch specific thread file does not exists, first failure
+        // Branch specific thread file does not exist, first failure
 
         const response = await publishMessage(firstMessage);
         const threadId = response.ts;

@@ -5,7 +5,7 @@ Get an instant Slack notification when one or more scenarios fail.
 ## Installation
 
 * `npm install codeceptjs-slack-reporter --save-dev`
-* Enable this plugin in `codecept.conf.js` with the minimal config:
+* Enable this plugin in your `codecept.conf.js` or `codecept.conf.ts` with the minimal config:
 
 ```js
 {
@@ -28,7 +28,7 @@ Get an instant Slack notification when one or more scenarios fail.
 ### Usage with CodeceptJS REST helper
 
 If you use the CodeceptJS REST / ApiDataFactory helper there is a current bug with this plugin, see https://github.com/codeceptjs/CodeceptJS/issues/2652
-A workaround is to set the from the slack web-api code expected header in the REST helper configuration like this
+A workaround is to set the form the slack web-api code expected header in the REST helper configuration like this
 
 ```js
 REST: {
