@@ -4,7 +4,7 @@ Get an instant Slack notification when one or more scenarios fail.
 
 ## Installation
 
-* `npm install codeceptjs-slack-reporter --save-dev`
+* `npm i codeceptjs-slack-reporter --save-dev`
 * Enable this plugin in your `codecept.conf.js` or `codecept.conf.ts` with the minimal config:
 
 ```js
